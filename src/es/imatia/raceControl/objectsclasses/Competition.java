@@ -1,9 +1,15 @@
 package es.imatia.raceControl.objectsclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Competition {
+public class Competition implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static final int DEFAULT_RACES = 10;
 
@@ -75,7 +81,7 @@ public class Competition {
 	public void addCar(CarCompetition car) {
 		boolean done = false;
 		for (int i = 0; i < this.getCarList().size(); i++) {
-			if (this.getCarList().get(i).equals(car)) {
+			if (this.getCarList().get(i).getCar().equals(car.getCar())) {
 				done = true;
 			}
 		}
@@ -125,9 +131,10 @@ public class Competition {
 		this.sortCarByPunctuation();
 		for (int i = 0; i < this.getCarList().size(); i++) {
 			CarCompetition car = this.getCarList().get(i);
-			ranking += "\t" + (i + 1) + ". " + car.getCar().getCarName() + " (" + car.getCar().getGarageName()
-					+ ") con " + car.getCarPunctuation() + " puntos)\n";
+			ranking += (i + 1) + ". " + car.getCar().getCarName() + " (" + car.getCar().getGarageName()
+					+ ") con " + car.getCarPunctuation() + " puntos\n";
 		}
+		ranking += "...........................";
 		return ranking;
 	}
 
@@ -157,16 +164,17 @@ public class Competition {
 						+ this.getCompetitionPodium()[i].getCarPunctuation() + " puntos)\n";
 			}
 		}
+		podium += "...........................";
 		return podium;
 	}
 
 	public String getStringCompetitionGarages() {
-		String garages = "\n___________" + this.getCompetitionName() + "___________\n";
+		String garages = "\n____" + this.getCompetitionName() + "____\n";
 		int i = 0;
 		if (!this.getGarageList().isEmpty()) {
 			for (Garage garage : this.getGarageList().values()) {
 				i += 1;
-				garages += "\t" + i + ". " + garage.getGarageName() + "\n";
+				garages += i + ". " + garage.getGarageName() + "\n";
 			}
 		} else {
 			garages += "\nEste torneo todavía no tiene inscrita ninguna escudería\n";

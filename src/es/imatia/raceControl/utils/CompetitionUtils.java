@@ -28,7 +28,7 @@ public class CompetitionUtils {
 				if (races.matches("\\d+")) {
 					raceNumber = Integer.parseInt(races);
 				}
-				if (!competitionList.containsKey(selectedKey)) {
+				if (!competitionList.containsKey(competitionName)) {
 					competitionList.put(competitionName, new Competition(competitionName, raceNumber));
 					System.out.print("\nTorneo creado correctamente\n");
 				} else {

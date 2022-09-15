@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class EliminationRace extends Race {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_PREVIEWS_ROUNDS = 10;
 	private int previewsRounds;
 
@@ -54,7 +58,7 @@ public class EliminationRace extends Race {
 	public void previewsRoundRace() {
 		for (int i = 0; i < this.getPreviewsRounds(); i++) {
 			for (CarCompetition car : this.getCarList()) {
-				car.getCar().speedChange();
+				car.getCar().randomSpeedChange();
 			}
 		}
 	}
@@ -73,15 +77,15 @@ public class EliminationRace extends Race {
 		int roundCount = 0;
 		while (this.getCarList().size() > 3) {
 			roundCount += 1;
-			ranking += "\nVuelta " + roundCount;
+			ranking += "\nVuelta " + roundCount + "\n";
 			this.raceRound();
 			int carPosition = 0;
 			for (int i = 0; i < this.getCarList().size(); i++) {
 				CarCompetition car = this.getCarList().get(i);
 				if (i != (getCarList().size() - 1)) {
 					carPosition += 1;
-					ranking += "\t" + carPosition + car.getCar().getCarName() + " (" + car.getCar().getGarageName()
-							+ ")\n";
+					ranking += "\t" + carPosition + ". " + car.getCar().getCarName() + " ("
+							+ car.getCar().getGarageName() + ")\n";
 				} else {
 					car.resetDistance();
 					car.getCar().setCarSpeed(0);
@@ -94,8 +98,8 @@ public class EliminationRace extends Race {
 		}
 
 		if (this.getCarList().size() == 3) {
-			ranking += "PRE FINAL ROUND: ";
-			ranking += "\t1. " + this.getCarList().get(0).getCar().getCarName() + " ("
+			ranking += "\nPRE FINAL ROUND: ";
+			ranking += "\n\t1. " + this.getCarList().get(0).getCar().getCarName() + " ("
 					+ this.getCarList().get(0).getCar().getGarageName() + ")\n";
 			ranking += "\t2. " + this.getCarList().get(1).getCar().getCarName() + " ("
 					+ this.getCarList().get(1).getCar().getGarageName() + ")\n";
@@ -103,7 +107,7 @@ public class EliminationRace extends Race {
 			this.getCarList().get(2).resetDistance();
 			this.getCarList().get(2).getCar().setCarSpeed(0);
 
-			ranking += "\n. BRONZE: " + this.getCarList().get(2).getCar().getCarName() + " ("
+			ranking += "\n BRONZE: " + this.getCarList().get(2).getCar().getCarName() + " ("
 					+ this.getCarList().get(2).getCar().getGarageName() + ")\n";
 
 			this.setBronze(this.getCarList().get(2));
@@ -111,22 +115,22 @@ public class EliminationRace extends Race {
 		}
 
 		if (this.getCarList().size() == 2) {
-			ranking += "FINAL ROUND: ";
-			ranking += "\nGOLD:. " + this.getCarList().get(0).getCar().getCarName() + " ("
-					+ this.getCarList().get(0).getCar().getGarageName() + ")\n";
-			ranking += "\nSILVER: " + this.getCarList().get(1).getCar().getCarName() + " ("
-					+ this.getCarList().get(1).getCar().getGarageName() + ")\n";
+			ranking += "\nFINAL ROUND: ";
+			ranking += "\n GOLD:. " + this.getCarList().get(0).getCar().getCarName() + " ("
+					+ this.getCarList().get(0).getCar().getGarageName() + ")";
+			ranking += "\n SILVER: " + this.getCarList().get(1).getCar().getCarName() + " ("
+					+ this.getCarList().get(1).getCar().getGarageName() + ")";
 			this.setSilver(this.getCarList().get(1));
 			this.setGold(this.getCarList().get(0));
 		}
 
 		if (this.getCarList().size() == 1) {
-			ranking += "FINAL: ";
-			ranking += "\nGOLD:. " + this.getCarList().get(0).getCar().getCarName() + " ("
+			ranking += "\nFINAL: ";
+			ranking += "\n GOLD:. " + this.getCarList().get(0).getCar().getCarName() + " ("
 					+ this.getCarList().get(0).getCar().getGarageName() + ")\n";
 			this.setGold(this.getCarList().get(0));
 		}
-
+		ranking += "\n*********************************\n";
 		competition.addDoneRace();
 		competition.setCompetitionPodium();
 		return ranking;

@@ -1,14 +1,19 @@
 package es.imatia.raceControl.objectsclasses;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Race {
-	protected static final int FIRST_PLACE_POINTS = 0;
-	protected static final int SECOND_PLACE_POINTS = 0;
-	protected static final int THIRD_PLACE_POINTS = 0;
+public abstract class Race implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected static final int FIRST_PLACE_POINTS = 30;
+	protected static final int SECOND_PLACE_POINTS = 20;
+	protected static final int THIRD_PLACE_POINTS = 10;
 
 	protected String raceName;
 	protected HashMap<String, Garage> garageList = new HashMap<String, Garage>();
@@ -66,7 +71,7 @@ public abstract class Race {
 						+ this.getRacePodium()[i].getCarPunctuation() + " puntos)\n";
 			}
 		} else {
-			details += ".... pendiente de realizar ....";
+			details += ".... pendiente de realizar ....\n";
 		}
 		return details;
 	}
@@ -78,17 +83,13 @@ public abstract class Race {
 	public void setCarList() {
 		if (this.getGarageList().size() > 1) {
 			for (Garage garage : this.getGarageList().values()) {
-				if (garage.getCarList().size() > 0) {
-					Car[] carGarage = (Car[]) garage.getCarList().values().toArray();
-					this.getCarList().add(new CarCompetition(carGarage[(int) (Math.random() * carGarage.length)]));
-				}
+				ArrayList<Car> carGarage = new ArrayList<Car>(garage.getCarList().values());
+				this.getCarList().add(new CarCompetition(carGarage.get((int) (Math.random() * carGarage.size()))));
 			}
-		} else if (this.getCarList().size() == 1) {
-			for (Garage garage : this.getGarageList().values()) {
-				if (garage.getCarList().size() > 0) {
-					for (Car car : garage.getCarList().values()) {
-						this.getCarList().add(new CarCompetition(car));
-					}
+		} else if (this.getGarageList().size() == 1) {
+			for(Garage garage : this.getGarageList().values()) {
+				for(Car car : garage.getCarList().values()) {
+					this.getCarList().add(new CarCompetition(car));
 				}
 			}
 		}

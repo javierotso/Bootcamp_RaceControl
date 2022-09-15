@@ -12,7 +12,7 @@ public class RaceUtils {
 		int option = -1;
 		/*
 		 * Menú Carreras: 1. Listar carreras 2. Ver detalle de carrera 3. Empezar
-		 * carrera 4. Crear nueva carrera (asociada a torneo) 5. Eliminar carrera 0.
+		 * carrera 4. Crear nueva carrera (asociada a torneo) 5. Eliminar carrera 6. Ver podium carrera 0.
 		 * Volver a menú principal
 		 */
 		while (option != 0) {
@@ -42,9 +42,9 @@ public class RaceUtils {
 				if (competitionList.size() > 0) {
 					String comptKey = CompetitionUtils.selectKeyCompetition(competitionList);
 					actualCompetition = competitionList.get(comptKey);
-					actualRace = selectRace(competitionList, comptKey);
+					actualRace = selecPendingRace(competitionList, comptKey);
 					if (!Objects.isNull(actualRace)) {
-						if (!Objects.isNull(actualRace.getRacePodium())) {
+						if (Objects.isNull(actualRace.getRacePodium())) {
 							System.out.print(actualRace.totalRace(actualCompetition));
 						} else {
 							System.out.print("\nLa carrera seleccionada ya se ha realizado\n");
@@ -180,6 +180,18 @@ public class RaceUtils {
 		}
 		return race;
 	}
+	
+	public static Race selecPendingRace(HashMap<String, Competition> competitionList, String selectedCompt) {
+		Race race = null;
+		if (!Objects.isNull(selectedCompt)) {
+			String selectedRace = selectKeyRace(competitionList.get(selectedCompt));
+			if (!Objects.isNull(selectedRace)) {
+				race = competitionList.get(selectedCompt).getRaceList().get(selectedRace);
+			}
+		}
+		return race;
+	}
+
 
 	public static String showRaceDetails(HashMap<String, Competition> competitionList) {
 		String raceDetails = "";
@@ -205,8 +217,27 @@ public class RaceUtils {
 			System.out.print(showRaceList(raceArray));
 			System.out.print("Indique el número de carrera a seleccionar: ");
 			int selected = Utils.readPositiveInt();
-			if (selected >= 0 && selected < raceArray.size()) {
-				selectedRace = raceArray.get(selected).getRaceName();
+			if (selected > 0 && selected <= raceArray.size()) {
+				selectedRace = raceArray.get(selected - 1).getRaceName();
+			}
+		}
+		return selectedRace;
+	}
+	
+	public static String selectUndoneKeyRace(Competition competition) {
+		String selectedRace = null;
+		if (!competition.getRaceList().isEmpty()) {
+			ArrayList<Race> raceArray = new ArrayList<Race>();
+			for(Race race : competition.getRaceList().values()) {
+				if(race.getRacePodium().equals(null)) {
+					raceArray.add(race);
+				}
+			}
+			System.out.print(showRaceList(raceArray));
+			System.out.print("Indique el número de carrera a seleccionar: ");
+			int selected = Utils.readPositiveInt();
+			if (selected > 0 && selected <= raceArray.size()) {
+				selectedRace = raceArray.get(selected - 1).getRaceName();
 			}
 		}
 		return selectedRace;
@@ -229,9 +260,9 @@ public class RaceUtils {
 	public static String showPendingRaceList(HashMap<String, Race> raceList) {
 		String raceString = "";
 		if (!raceList.isEmpty()) {
-			raceString += "\n   Carreras realizadas:\n";
+			raceString += "\n    Carreras pendientes:\n";
 			for (Race race : raceList.values()) {
-				if (!Objects.isNull(race.getRacePodium())) {
+				if (Objects.isNull(race.getRacePodium())) {
 					raceString += "\t- " + race.getRaceName();
 					if (race instanceof StandardRace) {
 						raceString += " (Estándar)\n";
@@ -249,9 +280,9 @@ public class RaceUtils {
 	public static String showDoneRaceList(HashMap<String, Race> raceList) {
 		String raceString = "";
 		if (!raceList.isEmpty()) {
-			raceString += "\n   Carreras realizadas:\n";
+			raceString += "    Carreras realizadas:\n";
 			for (Race race : raceList.values()) {
-				if (Objects.isNull(race.getRacePodium())) {
+				if (!Objects.isNull(race.getRacePodium())) {
 					raceString += "\t- " + race.getRaceName();
 					if (race instanceof StandardRace) {
 						raceString += " (Estándar)\n";
@@ -270,14 +301,17 @@ public class RaceUtils {
 		String raceString = "\nLista de Carreras por Torneo: \n";
 		for (Competition competition : competitionList.values()) {
 			if (!competition.getRaceList().isEmpty()) {
-				raceString += "\n   " + competition.getCompetitionName() + ": \n";
+				raceString += "\n" + competition.getCompetitionName() + ": \n";
 				raceString += showDoneRaceList(competition.getRaceList());
 				raceString += showPendingRaceList(competition.getRaceList());
 			}
 		}
 		if (raceString.equals("\nLista de Carreras por Torneo: \n")) {
 			raceString = "\nTodavía no hay carreras para mostrar\n";
+		} else {
+			raceString += "................................\n";
 		}
+
 		return raceString;
 	}
 

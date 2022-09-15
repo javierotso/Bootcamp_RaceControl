@@ -1,9 +1,14 @@
 package es.imatia.raceControl.objectsclasses;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class Garage {
+public class Garage implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String garageName;
 	private HashMap<String, Car> carList;
 

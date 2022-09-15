@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StandardRace extends Race {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int DEFAULT_STANDARD_RACE_DURATION = 180; // min
 	private static final int PREVIEWS_RANDOM_SPEED = 60;
 	private int duration;
@@ -53,7 +57,7 @@ public class StandardRace extends Race {
 
 	public ArrayList<CarCompetition> raceMinute() {
 		for (CarCompetition car : this.getCarList()) {
-			car.getCar().speedChange();
+			car.getCar().randomSpeedChange();
 			car.addMinuteDistance();
 		}
 		this.sortCarByDistance();
@@ -72,55 +76,49 @@ public class StandardRace extends Race {
 	public String totalRace(Competition competition) {
 		String ranking = "\nCARRERA " + this.getRaceName().toUpperCase() + ":\n";
 		int consumedTime = 0;
-		while (this.getCarList().get(this.getCarList().size() - 1).getCar()
-				.getCarSpeed() < StandardRace.PREVIEWS_RANDOM_SPEED) {
-			this.raceStartMinutes();
-			consumedTime += 1;
-			int carPosition = 0;
-			for (CarCompetition car : this.getCarList()) {
-				carPosition += 1;
-				ranking += "\t" + carPosition + car.getCar().getCarName() + " (" + car.getCar().getGarageName() + ")\n";
-			}
+		while (this.getCarList().get(this.getCarList().size() - 1).getCar().getCarSpeed() < PREVIEWS_RANDOM_SPEED
+				&& consumedTime < this.getDuration()) {
+			consumedTime++;
+			ranking += this.roundString(raceStartMinutes()) + "\n";
 		}
-
 		for (int i = 0; i < (this.getDuration() - consumedTime); i++) {
-			this.raceMinute();
-			int carPosition = 0;
-			for (CarCompetition car : this.getCarList()) {
-				carPosition += 1;
-				ranking += "\t" + carPosition + car.getCar().getCarName() + " (" + car.getCar().getGarageName() + ")\n";
-			}
+			ranking += this.roundString(raceMinute()) + "\n";
 		}
-		/*
-		 * End of race... inicializate distance and car speed to 0
-		 */
+		this.setRacePodium(this.getCarList());
+		competition.setCompetitionPodium();
 		for (CarCompetition car : this.getCarList()) {
 			car.resetDistance();
-			car.getCar().setCarSpeed(0);
 		}
-		/*
-		 * Set pódium
-		 */
-		this.setRacePodium();
-		competition.addDoneRace();
-		competition.setCompetitionPodium();
+		;
+		ranking += "...........................................................";
 		return ranking;
 	}
 
-	public void setRacePodium() {
-		this.podium = new CarCompetition[3];
+	private String roundString(ArrayList<CarCompetition> carListt) {
+		int carPosition = 0;
+		String ranking = "";
+		for (CarCompetition car : carList) {
+			carPosition += 1;
+			ranking += "\t" + carPosition + ". " + car.getCar().getCarName() + " (" + car.getCar().getGarageName()
+					+ ") (" + car.getCarDistance() + " metros)\n";
+		}
+		return ranking;
+	}
+
+	public void setRacePodium(ArrayList<CarCompetition> carList) {
+		this.podium = new CarCompetition[Math.min(carList.size(), 3)];
 		sortCarByDistance();
-		if (!this.getCarList().get(0).equals(null)) {
-			this.getCarList().get(0).addPunctuation(FIRST_PLACE_POINTS);
-			this.podium[0] = this.getCarList().get(0);
-		}
-		if (!this.getCarList().get(1).equals(null)) {
-			this.getCarList().get(1).addPunctuation(SECOND_PLACE_POINTS);
-			this.podium[0] = this.getCarList().get(1);
-		}
-		if (!this.getCarList().get(2).equals(null)) {
-			this.getCarList().get(2).addPunctuation(THIRD_PLACE_POINTS);
-			this.podium[0] = this.getCarList().get(2);
+		for (int i = 0; i < carList.size() && i < 3; i++) {
+			if (i == 0) {
+				carList.get(i).addPunctuation(FIRST_PLACE_POINTS);
+			}
+			if (i == 1) {
+				carList.get(i).addPunctuation(SECOND_PLACE_POINTS);
+			}
+			if (i == 2) {
+				carList.get(i).addPunctuation(THIRD_PLACE_POINTS);
+			}
+			this.podium[i] = carList.get(i);
 		}
 
 	}

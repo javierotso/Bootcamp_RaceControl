@@ -1,9 +1,11 @@
 package es.imatia.raceControl;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
@@ -12,44 +14,20 @@ import es.imatia.raceControl.objectsclasses.*;
 import es.imatia.raceControl.utils.*;
 
 public class main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
+
 		HashMap<String, Garage> garageList = new HashMap<String, Garage>();
 		HashMap<String, Competition> competitionList = new HashMap<String, Competition>();
-/*
-		File file = new File("data.bin");
-		FileInputStream fileInput = null;
-		try {
-			fileInput = new FileInputStream(file);
-			ObjectInputStream ois = new ObjectInputStream(fileInput);
-			boolean nextObjt = true;
-			while (nextObjt) {
-				Object o1 = ois.readObject();
-				if (o1 != null) {
-					nextObjt = false;
-				} else if (o1.getClass().equals(garageList.getClass())) {
-					garageList = (HashMap<String, Garage>) o1;
-				} else if (o1.getClass().equals(competitionList.getClass())) {
-					competitionList = (HashMap<String, Competition>) o1;
-				}
-			}
-			fileInput.close();
+
+		File dataFile = new File("data.bin");
+		if (dataFile.exists()) {
+			FileInputStream fis = new FileInputStream(dataFile);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			garageList = (HashMap<String, Garage>) ois.readObject();
+			competitionList = (HashMap<String, Competition>) ois.readObject();
 			ois.close();
-		} catch (FileNotFoundException e) {
-			System.out.print("\nNo se ha encontrado fichero de datos, empezamos el programa sin datos\n");
-		} catch (Exception e) {
-			System.out.print(e.getMessage());
-		}*/
-		/*
-		 * Menú Carreras: 1. Listar carreras 2. Ver detalle de carrera 3. Empezar
-		 * carrera 4. Crear nueva carrera (asociada a torneo) 5. Eliminar carrera 6.
-		 * Editar carrera 0. Volver a menú principal
-		 *
-		 * Menú Torneos: 1. Ir a torneos finalizados 2. Ir a torneos activos 0. Volver a
-		 * menú principal
-		 * 
-		 * Finalizados -> 1. Listar 2. Listar ranking 3. Ver podium 0. Volver Activos ->
-		 * 1. Listar 2. Ver ranking 3. Ver podium 0. Volver
-		 */
+		}
+
 		int option = -1;
 
 		while (option != 0) {
@@ -74,20 +52,46 @@ public class main {
 
 			}
 		}
-/*
-		try {
-			FileOutputStream fileOutput = new FileOutputStream(file);
-			ObjectOutputStream oos = new ObjectOutputStream(fileOutput);
-			oos.writeObject(garageList);
-			oos.writeObject(competitionList);
-			fileOutput.close();
-			oos.close();
-		} catch (FileNotFoundException e) {
-			System.out.print("\nNo se ha encontrado fichero de datos, empezamos el programa sin datos\n");
-		} catch (Exception e) {
-			System.out.print(e.getMessage());
-		}*/
-
+		if (dataFile.exists()) {
+			dataFile.delete();
+		}
+		FileOutputStream fos = new FileOutputStream(dataFile);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(garageList);
+		oos.writeObject(competitionList);
+		oos.close();
 	}
 
+	/*
+	 * En caso de perder los datos: descomentar esto: Garage escuderia1 = new
+	 * Garage("Escuderia 1"); Garage escuderia2 = new Garage("Escuderia 2");
+	 * 
+	 * Car c1e1 = new Car("Coche", "1", escuderia1); Car c2e1 = new Car("Coche",
+	 * "2", escuderia1); Car c3e1 = new Car("Coche", "3", escuderia1); Car c4e1 =
+	 * new Car("Coche", "4", escuderia1);
+	 * 
+	 * Car c1e2 = new Car("Coche", "1", escuderia2); Car c2e2 = new Car("Coche",
+	 * "2", escuderia2); Car c3e2 = new Car("Coche", "3", escuderia2); Car c4e2 =
+	 * new Car("Coche", "4", escuderia2); Car c5e2 = new Car("Coche", "5",
+	 * escuderia2);
+	 * 
+	 * escuderia1.addCar(c1e1); escuderia1.addCar(c2e1); escuderia1.addCar(c3e1);
+	 * escuderia1.addCar(c4e1);
+	 * 
+	 * escuderia2.addCar(c1e2); escuderia2.addCar(c2e2); escuderia2.addCar(c3e2);
+	 * escuderia2.addCar(c4e2); escuderia2.addCar(c5e2);
+	 * 
+	 * garageList.put(escuderia1.getGarageName(), escuderia1);
+	 * garageList.put(escuderia2.getGarageName(), escuderia2);
+	 * 
+	 * Competition torneo1 = new Competition("Torneo 1", 3);
+	 * competitionList.put(torneo1.getCompetitionName(), torneo1);
+	 * 
+	 * Race c1t1 = new StandardRace("Carrera 1", escuderia2); Race c2t1 = new
+	 * EliminationRace("Carrera 2", escuderia1);
+	 * 
+	 * Race c3t1 = new StandardRace("Carrera 3", garageList);
+	 * 
+	 * torneo1.addRace(c3t1); torneo1.addRace(c1t1); torneo1.addRace(c2t1);
+	 */
 }
