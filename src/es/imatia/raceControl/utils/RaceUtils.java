@@ -118,9 +118,9 @@ public class RaceUtils {
 		System.out.print("\nIndique el nombre de la nueva carrera: ");
 		String raceName = Utils.prettyPrint(sc.nextLine());
 		if (!competition.getRaceList().containsKey(raceName)) {
-			int moreGarage = 1;
+			String moreGarage = "1";
 			HashMap<String, Garage> garageRaceList = new HashMap<String, Garage>();
-			while (moreGarage == 1 || garageRaceList.isEmpty()) {
+			while (moreGarage.equals("1") || garageRaceList.isEmpty()) {
 				System.out.print(GarageUtils.showGaragesList(garageList));
 				System.out.print("\nIndique el nombre de la escudería a incluír en la carrera: ");
 				String garageKey = Utils.prettyPrint(sc.nextLine());
@@ -134,7 +134,7 @@ public class RaceUtils {
 				}
 				if (!garageRaceList.isEmpty()) {
 					System.out.print("(pulse 1 para añadir más escuderías a la carrera)");
-					moreGarage = Utils.readPositiveInt();
+					moreGarage = Utils.prettyPrint(sc.nextLine());
 				}
 			}
 			System.out.print("\nIndique el tipo (estandar/eliminatoria): ");

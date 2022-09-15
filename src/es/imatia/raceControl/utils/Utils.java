@@ -64,11 +64,14 @@ public class Utils {
 	}
 
 	public static String prettyPrint(String a) {
-		StringBuilder newString = new StringBuilder(a.trim().toLowerCase());
-		newString.setCharAt(0, Character.toUpperCase(newString.charAt(0)));
-		for (int i = 1; i < newString.length() - 1; i++) {
-			if (newString.charAt(i - 1) == ' ') {
-				newString.setCharAt(i, Character.toUpperCase(newString.charAt(i)));
+		StringBuilder newString = new StringBuilder("");
+		if (a.length() > 0) {
+			newString = new StringBuilder(a.trim().toLowerCase());
+			newString.setCharAt(0, Character.toUpperCase(newString.charAt(0)));
+			for (int i = 1; i < newString.length() - 1; i++) {
+				if (newString.charAt(i - 1) == ' ') {
+					newString.setCharAt(i, Character.toUpperCase(newString.charAt(i)));
+				}
 			}
 		}
 		return newString.toString();
