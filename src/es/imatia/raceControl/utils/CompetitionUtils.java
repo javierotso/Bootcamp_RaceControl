@@ -139,15 +139,20 @@ public class CompetitionUtils {
 				} else {
 					System.out.print("\nEste torneo todavía no tiene ninguna carrera\n");
 				}
+				break;
 			case 3:
 				if (!competition.getRaceList().isEmpty()) {
 					selectedRace = RaceUtils.selectRace(RaceUtils.raceToArray(competition.getRaceList()));
 					if(!Objects.isNull(selectedRace)) {
+						/*
+						 * Añadir las escuderías que participan
+						 */
 						System.out.print(selectedRace.totalRace(competition));
 					}
 				} else {
 					System.out.print("\nEste torneo todavía no tiene ninguna carrera\n");
 				}
+				break;
 			case 4:
 				if (!Objects.isNull(competition.getCompetitionPodium())) {
 					System.out.print(competition.getStringCompetitionPodium());

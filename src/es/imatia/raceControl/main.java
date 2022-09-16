@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Random;
-
 import es.imatia.raceControl.objectsclasses.*;
 import es.imatia.raceControl.utils.*;
 
@@ -18,7 +17,7 @@ public class main {
 		HashMap<String, Garage> garageList = new HashMap<String, Garage>();
 		HashMap<String, Race> raceList = new HashMap<String, Race>();
 		HashMap<String, Competition> competitionList = new HashMap<String, Competition>();
-/*
+
 		File dataFile = new File("data.bin");
 		if (dataFile.exists()) {
 			FileInputStream fis = new FileInputStream(dataFile);
@@ -26,8 +25,8 @@ public class main {
 			garageList = (HashMap<String, Garage>) ois.readObject();
 			competitionList = (HashMap<String, Competition>) ois.readObject();
 			ois.close();
-		}*/
-		startTask(garageList, raceList, competitionList);
+		}
+
 		int option = -1;
 
 		while (option != 0) {
@@ -51,7 +50,7 @@ public class main {
 				System.out.print("\nLa opción seleccionada no está disponible todavía\n");
 
 			}
-		}/*
+		}
 		if (dataFile.exists()) {
 			dataFile.delete();
 		}
@@ -61,8 +60,8 @@ public class main {
 		oos.writeObject(garageList);
 		oos.writeObject(competitionList);
 		oos.close();
-*/
-	}
+
+	}	
 
 	public static void startTask(HashMap<String, Garage> garageList, HashMap<String, Race> raceList,
 			HashMap<String, Competition> competitionList) {
