@@ -107,7 +107,7 @@ public class StandardRace extends Race {
 
 	@Override
 	public String getDetails() {
-		return ("\nCarrera: " + this.getRaceName() + "\n\tTipo: Estándar" + "\n\tDuración: " + this.getDuration() + " minutos");
+		return ("\nCarrera: " + this.getRaceName() + "\n   Tipo: Estándar" + "\n   Duración: " + this.getDuration() + " minutos\n");
 
 	}
 

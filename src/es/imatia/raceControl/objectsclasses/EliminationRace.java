@@ -54,7 +54,7 @@ public class EliminationRace extends Race {
 	
 	public String getDetails() {
 		
-		return ("\nCarrera: " + this.getRaceName() + "\n\tTipo: Eliminatoria" + "\n\tRondas de calentamiento: " + this.getPreviewsRounds());
+		return ("\nCarrera: " + this.getRaceName() + "\n   Tipo: Eliminatoria" + "\n   Rondas de calentamiento: " + this.getPreviewsRounds() + "\n");
 	}
 
 	public String totalRace(Competition competition) {

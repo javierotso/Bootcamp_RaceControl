@@ -1,5 +1,6 @@
 package es.imatia.raceControl.utils;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utils {
@@ -41,8 +42,7 @@ public class Utils {
 	}
 
 	public static String principalMenu() {
-		return ("\n\n\t1. Ir a torneos\n\t2. Ir a escuderías\n\t"
-				+ "3. Ir a carreras\n\t0. Salir");
+		return ("\n\n\t1. Ir a torneos\n\t2. Ir a escuderías\n\t" + "3. Ir a carreras\n\t0. Salir");
 
 	}
 
@@ -63,11 +63,15 @@ public class Utils {
 		}
 		return num;
 	}
-	
+
 	public static String readString(String msg) {
 		Scanner sc = new Scanner(System.in);
-		System.out.print("\n" + msg + " ");
-		return sc.nextLine();
+		String answer = "";
+		while (answer.isEmpty()) {
+			answer = sc.nextLine();
+			System.out.print("\n" + msg + " ");
+		}
+		return answer;
 	}
 
 	public static String prettyPrint(String a) {
@@ -83,4 +87,5 @@ public class Utils {
 		}
 		return newString.toString();
 	}
+
 }

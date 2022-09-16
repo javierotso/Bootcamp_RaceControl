@@ -92,8 +92,9 @@ public class CompetitionUtils {
 	public static void addRace(Competition competition, HashMap<String, Race> raceList) {
 		String next = "s";
 		while (next.equalsIgnoreCase("s") || competition.getRaceList().isEmpty()) {
-			System.out.print("...Vamos a añadir carreras al torneo (debe tener una como mínimo)...");
-			Race race = RaceUtils.selectRace((Race[]) raceList.values().toArray());
+			System.out.print("\n...Vamos a añadir carreras al torneo (debe tener una como mínimo)...\n");
+			
+			Race race = RaceUtils.selectRace(RaceUtils.raceToArray(raceList));
 			if (!Objects.isNull(race)) {
 				if (competition.addRace(race)) {
 					System.out.print("\nCarrera añadida correctamente\n");
@@ -119,6 +120,7 @@ public class CompetitionUtils {
 			} else {
 				System.out.print("\n\t4. Añadir carrera a torneo");
 			}
+			System.out.print("\n\t0. Volver\n");
 			option = Utils.readPositiveInt("¿Que acción desea realizar?:");
 			switch (option) {
 			case 1:
@@ -130,16 +132,16 @@ public class CompetitionUtils {
 				break;
 			case 2:
 				if (!competition.getRaceList().isEmpty()) {
-					selectedRace = RaceUtils.selectRace((Race[]) competition.getRaceList().values().toArray());
+					selectedRace = RaceUtils.selectRace(RaceUtils.raceToArray(raceList));
 					if(!Objects.isNull(selectedRace)) {
-						System.out.print(selectedRace.getRacePodium());
+						System.out.print(selectedRace.podiumToString());
 					}
 				} else {
 					System.out.print("\nEste torneo todavía no tiene ninguna carrera\n");
 				}
 			case 3:
 				if (!competition.getRaceList().isEmpty()) {
-					selectedRace = RaceUtils.selectRace((Race[]) competition.getRaceList().values().toArray());
+					selectedRace = RaceUtils.selectRace(RaceUtils.raceToArray(competition.getRaceList()));
 					if(!Objects.isNull(selectedRace)) {
 						System.out.print(selectedRace.totalRace(competition));
 					}
@@ -161,28 +163,4 @@ public class CompetitionUtils {
 			}
 		}
 	}
-	/*
-	 * case 3: if (!competitionList.isEmpty()) { selectedKey =
-	 * selectKeyCompetition(competitionList); if (!Objects.isNull(selectedKey) &&
-	 * !Objects.isNull(competitionList.get(selectedKey).getCompetitionPodium())) {
-	 * System.out.print(competitionList.get(selectedKey).getStringCompetitionPodium(
-	 * )); } else { System.out.
-	 * print("\nEl torneo seleccionado no existe o todavía no ha finalizado\n"); }
-	 * 
-	 * } else { System.out.print("\nTodavía no hay torneos\n"); } break; case 4: if
-	 * (!competitionList.isEmpty()) { selectedKey =
-	 * selectKeyCompetition(competitionList); if (!Objects.isNull(selectedKey) &&
-	 * !competitionList.get(selectedKey).getCompetitionRanking().isEmpty()) {
-	 * System.out.print(competitionList.get(selectedKey).getCompetitionRanking()); }
-	 * else { System.out.
-	 * print("\nEl torneo seleccionado no existe o no tiene todavía ningún ránking\n"
-	 * ); }
-	 * 
-	 * } else { System.out.print("\nTodavía no hay torneos\n"); } break; case 3: if
-	 * (!competitionList.isEmpty()) { selectedKey =
-	 * selectKeyCompetition(competitionList); if (!Objects.isNull(selectedKey)) {
-	 * System.out.print(competitionList.get(selectedKey).getStringCompetitionGarages
-	 * ()); } else { System.out.print("\nEl torneo seleccionado no existe\n"); } }
-	 * else { System.out.print("\nTodavía no hay torneos\n"); } break;
-	 */
 }

@@ -103,6 +103,8 @@ public abstract class Race implements Serializable, Cloneable {
 		return podium;
 	}
 
+
+	
 	public String podiumToString() {
 		String podium = "\n" + this.getRaceName().toUpperCase() + "\n";
 		if (!this.getRacePodium().equals(null)) {
