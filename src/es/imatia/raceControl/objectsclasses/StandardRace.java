@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import es.imatia.raceControl.utils.Utils;
+
 public class StandardRace extends Race {
 	/**
 	 * 
@@ -13,33 +15,13 @@ public class StandardRace extends Race {
 	private static final int PREVIEWS_RANDOM_SPEED = 60;
 	private int duration;
 
-	public StandardRace(String raceName, Garage garage) {
-		super(raceName, garage);
+	public StandardRace (String raceName) {
+		super(raceName);
 		this.setDuration(StandardRace.getDEFAULT_STANDARD_RACE_DURATION());
 	}
-
-	public StandardRace(String raceName, Garage garage, int duration) {
-		super(raceName, garage);
-		this.setDuration(duration);
-	}
-
-	public StandardRace(String raceName, HashMap<String, Garage> garageList) {
-		super(raceName, garageList);
-		this.setDuration(StandardRace.getDEFAULT_STANDARD_RACE_DURATION());
-	}
-
-	public StandardRace(String raceName, HashMap<String, Garage> garageList, int duration) {
-		super(raceName, garageList);
-		this.setDuration(duration);
-	}
-
-	public StandardRace(String raceName, List<Garage> garageList) {
-		super(raceName, garageList);
-		this.setDuration(StandardRace.getDEFAULT_STANDARD_RACE_DURATION());
-	}
-
-	public StandardRace(String raceName, List<Garage> garageList, int duration) {
-		super(raceName, garageList);
+	
+	public StandardRace (String raceName, int duration) {
+		super(raceName);
 		this.setDuration(duration);
 	}
 
@@ -120,6 +102,12 @@ public class StandardRace extends Race {
 			}
 			this.podium[i] = carList.get(i);
 		}
+
+	}
+
+	@Override
+	public String getDetails() {
+		return ("\nCarrera: " + this.getRaceName() + "\n\tTipo: Estándar" + "\n\tDuración: " + this.getDuration() + " minutos");
 
 	}
 

@@ -3,6 +3,7 @@ package es.imatia.raceControl.objectsclasses;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Competition implements Serializable {
 
@@ -10,8 +11,6 @@ public class Competition implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public static final int DEFAULT_RACES = 10;
 
 	private String competitionName;
 	private int totalRaces;
@@ -29,7 +28,7 @@ public class Competition implements Serializable {
 
 	public Competition(String competitionName) {
 		this.setCompetitionName(competitionName);
-		this.setTotalRaces(Competition.getDEFAULT_RACES());
+		this.setTotalRaces(0);
 	}
 
 	public String getCompetitionName() {
@@ -68,10 +67,6 @@ public class Competition implements Serializable {
 		return competitionPodium;
 	}
 
-	public static int getDEFAULT_RACES() {
-		return DEFAULT_RACES;
-	}
-
 	public void addGarage(Garage garage) {
 		if (!this.getGarageList().containsKey(garage.getGarageName())) {
 			this.getGarageList().put(garage.getGarageName(), garage);
@@ -93,18 +88,18 @@ public class Competition implements Serializable {
 	public void addDoneRace() {
 		this.doneRaces += 1;
 	}
-	
+
 	public boolean addRace(Race race) {
 		boolean added = false;
 		if (!this.getRaceList().containsKey(race.getRaceName())) {
-			this.getRaceList().put(race.getRaceName(), race);
+			if (race instanceof EliminationRace) {
+				raceList.put(race.getRaceName(), new EliminationRace(race.getRaceName(), ((EliminationRace) race).getPreviewsRounds()));
+			} else if (race instanceof StandardRace) {
+				raceList.put(race.getRaceName(),new StandardRace(race.getRaceName(), ((StandardRace) race).getDuration()));
+
+			}
+			this.setTotalRaces(this.getTotalRaces() + 1);
 			added = true;
-			for (CarCompetition car : race.getCarList()) {
-				this.addCar(car);
-			}
-			for (Garage garage : race.getGarageList().values()) {
-				this.addGarage(garage);
-			}
 		}
 		return added;
 	}
@@ -131,10 +126,10 @@ public class Competition implements Serializable {
 		this.sortCarByPunctuation();
 		for (int i = 0; i < this.getCarList().size(); i++) {
 			CarCompetition car = this.getCarList().get(i);
-			ranking += (i + 1) + ". " + car.getCar().getCarName() + " (" + car.getCar().getGarageName()
-					+ ") con " + car.getCarPunctuation() + " puntos\n";
+			ranking += (i + 1) + ". " + car.getCar().getCarName() + " (" + car.getCar().getGarageName() + ") con "
+					+ car.getCarPunctuation() + " puntos\n";
 		}
-		ranking += "...........................";
+		ranking += "\n...............................\n";
 		return ranking;
 	}
 
@@ -158,7 +153,7 @@ public class Competition implements Serializable {
 	public String getStringCompetitionPodium() {
 		String podium = "\n___________" + this.getCompetitionName() + "___________\n";
 		for (int i = 0; i < this.getCompetitionPodium().length; i++) {
-			if (!this.getCompetitionPodium()[i].equals(null)) {
+			if (!Objects.isNull(this.getCompetitionPodium()[i])) {
 				podium += "\t" + (i + 1) + ". " + this.getCompetitionPodium()[i].getCar().getCarName() + " ("
 						+ this.getCompetitionPodium()[i].getCar().getGarageName() + ") con "
 						+ this.getCompetitionPodium()[i].getCarPunctuation() + " puntos)\n";

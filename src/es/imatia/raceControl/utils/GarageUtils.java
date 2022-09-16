@@ -4,20 +4,19 @@ import es.imatia.raceControl.objectsclasses.*;
 
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class GarageUtils {
-	/*
-	 * Menú Escuderías: 3. Crear escudería
-	 */
+
 	public static void garageMenu(HashMap<String, Garage> garageList) {
 		int option = -1;
 
 		while (option != 0) {
 			Garage actualGarage = null;
 			System.out.print(Utils.secondaryHeader("Esuderías", '_'));
-			System.out.print(garageMenu());
-			option = Utils.readPositiveInt();
+			System.out.print(("\n\t1. Listar escuderías\n\t2. Añadir coche a escudería\n\t3. Añadir nueva escudería"
+					+ "\n\t4. Eliminar coche de escudería\n\t5. Eliminar escudería\n\t"
+					+ "6. Mostrar detalle de escudería\n\t0. Volver a menú principal"));
+			option = Utils.readPositiveInt("¿Que acción desea realizar?:");
 			switch (option) {
 			case 1:
 				System.out.print(showGaragesList(garageList));
@@ -91,10 +90,8 @@ public class GarageUtils {
 	}
 
 	public static boolean newGarage(HashMap<String, Garage> garageList) {
-		Scanner sc = new Scanner(System.in);
 		boolean created = false;
-		System.out.print("\nIndique el nombre de la nueva escudería: ");
-		String garageName = Utils.prettyPrint(sc.nextLine());
+		String garageName = Utils.prettyPrint(Utils.readString("Indique el nombre de la nueva escudería:"));
 		if (!garageList.containsKey(garageName)) {
 			garageList.put(garageName, new Garage(garageName));
 			created = true;
@@ -103,13 +100,11 @@ public class GarageUtils {
 	}
 
 	public static Garage selectGarage(HashMap<String, Garage> garageList) {
-		Scanner sc = new Scanner(System.in);
 		Garage garage = null;
 		if (!garageList.isEmpty()) {
 			String garageName;
 			System.out.print(showGaragesList(garageList));
-			System.out.print("\nEscriba el nombre de la escudería deseada: ");
-			garageName = Utils.prettyPrint(sc.nextLine());
+			garageName = Utils.prettyPrint("Escriba el nombre de la escudería deseada:");
 			if (garageList.containsKey(garageName)) {
 				garage = garageList.get(garageName);
 			}
@@ -143,10 +138,8 @@ public class GarageUtils {
 
 	public static boolean removeCar(Garage garage) {
 		boolean removed = false;
-		Scanner sc = new Scanner(System.in);
 		System.out.print(showCarGarageList(garage));
-		System.out.print("\nIndique el nombre del coche a eliminar: ");
-		String carName = Utils.prettyPrint(sc.nextLine());
+		String carName = Utils.prettyPrint(Utils.readString("Indique el nombre del coche a eliminar:"));
 		if (garage.getCarList().containsKey(carName)) {
 			garage.getCarList().remove(carName);
 			removed = true;
@@ -155,19 +148,9 @@ public class GarageUtils {
 	}
 
 	public static Car newCar(Garage garage) {
-		Scanner sc = new Scanner(System.in);
 		String model, brand;
-		System.out.print("\nIndique la marca del coche: ");
-		brand = Utils.prettyPrint(sc.nextLine());
-		System.out.print("\nIndique el modelo del coche: ");
-		model = Utils.prettyPrint(sc.nextLine());
+		brand = Utils.prettyPrint(Utils.readString("Indique la marca del coche:"));
+		model = Utils.prettyPrint(Utils.readString("Indique el modelo del coche:"));
 		return new Car(brand, model, garage);
-	}
-
-	public static String garageMenu() {
-		return ("\n\t1. Listar escuderías\n\t2. Añadir coche a escudería\n\t3. Añadir nueva escudería"
-				+ "\n\t4. Eliminar coche de escudería\n\t5. Eliminar escudería\n\t"
-				+ "6. Mostrar detalle de escudería\n\t0. Volver a menú principal\n"
-				+ "¿Que acción desea realizar?: ");
 	}
 }

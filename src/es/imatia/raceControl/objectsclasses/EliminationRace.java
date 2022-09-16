@@ -13,34 +13,14 @@ public class EliminationRace extends Race {
 	private static final int DEFAULT_PREVIEWS_ROUNDS = 10;
 	private int previewsRounds;
 
-	public EliminationRace(String raceName, Garage garage) {
-		super(raceName, garage);
+	public EliminationRace(String raceName) {
+		super(raceName);
 		this.setPreviewsRounds(EliminationRace.getDEFAULT_PREVIEWS_ROUNDS());
 	}
 
-	public EliminationRace(String raceName, Garage garage, int previewsRounds) {
-		super(raceName, garage);
-		this.setPreviewsRounds(previewsRounds);
-	}
-
-	public EliminationRace(String raceName, HashMap<String, Garage> garageList) {
-		super(raceName, garageList);
-		this.setPreviewsRounds(EliminationRace.getDEFAULT_PREVIEWS_ROUNDS());
-	}
-
-	public EliminationRace(String raceName, HashMap<String, Garage> garageList, int previewsRounds) {
-		super(raceName, garageList);
-		this.setPreviewsRounds(previewsRounds);
-	}
-
-	public EliminationRace(String raceName, List<Garage> garageList) {
-		super(raceName, garageList);
-		this.setPreviewsRounds(EliminationRace.getDEFAULT_PREVIEWS_ROUNDS());
-	}
-
-	public EliminationRace(String raceName, List<Garage> garageList, int previewsRounds) {
-		super(raceName, garageList);
-		this.setPreviewsRounds(previewsRounds);
+	public EliminationRace(String raceName, int previews) {
+		super(raceName);
+		this.setPreviewsRounds(previews);
 	}
 
 	public int getPreviewsRounds() {
@@ -70,6 +50,11 @@ public class EliminationRace extends Race {
 		}
 		this.sortCarByDistance();
 		return this.getCarList();
+	}
+	
+	public String getDetails() {
+		
+		return ("\nCarrera: " + this.getRaceName() + "\n\tTipo: Eliminatoria" + "\n\tRondas de calentamiento: " + this.getPreviewsRounds());
 	}
 
 	public String totalRace(Competition competition) {

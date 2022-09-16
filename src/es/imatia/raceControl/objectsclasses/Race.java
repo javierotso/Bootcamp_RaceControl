@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Race implements Serializable {
+public abstract class Race implements Serializable, Cloneable {
 	/**
 	 * 
 	 */
@@ -36,6 +36,10 @@ public abstract class Race implements Serializable {
 			this.garageList.put(garage.getGarageName(), garage);
 		}
 		this.setCarList();
+	}
+
+	public Race(String raceName) {
+		this.setRaceName(raceName);
 	}
 
 	public String getRaceName() {
@@ -87,8 +91,8 @@ public abstract class Race implements Serializable {
 				this.getCarList().add(new CarCompetition(carGarage.get((int) (Math.random() * carGarage.size()))));
 			}
 		} else if (this.getGarageList().size() == 1) {
-			for(Garage garage : this.getGarageList().values()) {
-				for(Car car : garage.getCarList().values()) {
+			for (Garage garage : this.getGarageList().values()) {
+				for (Car car : garage.getCarList().values()) {
 					this.getCarList().add(new CarCompetition(car));
 				}
 			}
@@ -101,18 +105,23 @@ public abstract class Race implements Serializable {
 
 	public String podiumToString() {
 		String podium = "\n" + this.getRaceName().toUpperCase() + "\n";
-		if (this.getRacePodium()[0].equals(null)) {
-			podium += "\t1. " + this.getRacePodium()[0].getCar().getCarName() + " ("
-					+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
+		if (!this.getRacePodium().equals(null)) {
+			if (this.getRacePodium()[0].equals(null)) {
+				podium += "\t1. " + this.getRacePodium()[0].getCar().getCarName() + " ("
+						+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
+			}
+			if (this.getRacePodium()[1].equals(null)) {
+				podium += "\t1. " + this.getRacePodium()[1].getCar().getCarName() + " ("
+						+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
+			}
+			if (this.getRacePodium()[2].equals(null)) {
+				podium += "\t1. " + this.getRacePodium()[2].getCar().getCarName() + " ("
+						+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
+			}
+		} else {
+			podium += "La carrera está pendiente de ser realizada";
 		}
-		if (this.getRacePodium()[1].equals(null)) {
-			podium += "\t1. " + this.getRacePodium()[1].getCar().getCarName() + " ("
-					+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
-		}
-		if (this.getRacePodium()[2].equals(null)) {
-			podium += "\t1. " + this.getRacePodium()[2].getCar().getCarName() + " ("
-					+ this.getRacePodium()[0].getCar().getGarageName() + ")\n";
-		}
+
 		return podium;
 	}
 
@@ -135,4 +144,5 @@ public abstract class Race implements Serializable {
 
 	public abstract String totalRace(Competition competition);
 
+	public abstract String getDetails();
 }
