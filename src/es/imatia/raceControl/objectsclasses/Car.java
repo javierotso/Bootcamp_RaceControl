@@ -1,13 +1,9 @@
 package es.imatia.raceControl.objectsclasses;
 
-import java.io.Serializable;
 import java.util.Random;
 
-public class Car implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Car {
+
 	public static final int MAX_SPEED = 200;
 	public static final int DEFAULT_SPEED_CHANGE = 10;
 
@@ -32,7 +28,7 @@ public class Car implements Serializable{
 	}
 
 	public void setCarSpeed(int carSpeed) {
-		if (carSpeed > 0 && carSpeed <= MAX_SPEED) {
+		if (carSpeed >= 0 && carSpeed <= MAX_SPEED) {
 			this.carSpeed = carSpeed;
 		}
 	}
@@ -73,7 +69,7 @@ public class Car implements Serializable{
 			this.setCarSpeed(this.getCarSpeed() - Car.DEFAULT_SPEED_CHANGE);
 		}
 	}
-	
+
 	public void accelerate() {
 		this.setCarSpeed(this.getCarSpeed() + Car.DEFAULT_SPEED_CHANGE);
 	}

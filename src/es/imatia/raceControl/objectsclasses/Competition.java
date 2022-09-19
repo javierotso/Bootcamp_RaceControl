@@ -1,34 +1,25 @@
 package es.imatia.raceControl.objectsclasses;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
-public class Competition implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Competition {
 
 	private String competitionName;
-	private int totalRaces;
 	private int doneRaces = 0;
 
 	private HashMap<String, Race> raceList = new HashMap<String, Race>();
 	private ArrayList<CarCompetition> carList = new ArrayList<CarCompetition>();
 	private HashMap<String, Garage> garageList = new HashMap<String, Garage>();
-	private CarCompetition[] competitionPodium;
+	private ArrayList<CarCompetition> competitionPodium = null;
 
-	public Competition(String competitionName, int totalRaces) {
+	public Competition(String competitionName, int doneRaces) {
 		this.setCompetitionName(competitionName);
-		this.setTotalRaces(totalRaces);
+		this.doneRaces = doneRaces;
 	}
 
 	public Competition(String competitionName) {
 		this.setCompetitionName(competitionName);
-		this.setTotalRaces(0);
 	}
 
 	public String getCompetitionName() {
@@ -37,14 +28,6 @@ public class Competition implements Serializable {
 
 	public void setCompetitionName(String competitionName) {
 		this.competitionName = competitionName;
-	}
-
-	public int getTotalRaces() {
-		return totalRaces;
-	}
-
-	public void setTotalRaces(int totalRaces) {
-		this.totalRaces = totalRaces;
 	}
 
 	public int getDoneRaces() {
@@ -63,25 +46,22 @@ public class Competition implements Serializable {
 		return garageList;
 	}
 
-	public CarCompetition[] getCompetitionPodium() {
+	public ArrayList<CarCompetition> getCompetitionPodium() {
 		return competitionPodium;
 	}
 
-	public void addGarage(Garage garage) {
-		if (!this.getGarageList().containsKey(garage.getGarageName())) {
-			this.getGarageList().put(garage.getGarageName(), garage);
+	public void addCarList(ArrayList<CarCompetition> carList, HashMap<String, Garage> garageList) {
+		for (CarCompetition car : carList) {
+			this.addCar(car, garageList);
 		}
 	}
 
-	public void addCar(CarCompetition car) {
-		boolean done = false;
-		for (int i = 0; i < this.getCarList().size(); i++) {
-			if (this.getCarList().get(i).getCar().equals(car.getCar())) {
-				done = true;
-			}
-		}
-		if (!done) {
+	public void addCar(CarCompetition car, HashMap<String, Garage> garageList) {
+		if (!this.getCarList().contains(car)) {
 			this.getCarList().add(car);
+			if (!this.getGarageList().containsKey(car.getCar().getGarageName())) {
+				this.getGarageList().put(car.getCar().getGarageName(), garageList.get(car.getCar().getGarageName()));
+			}
 		}
 	}
 
@@ -89,16 +69,27 @@ public class Competition implements Serializable {
 		this.doneRaces += 1;
 	}
 
+	public boolean deleteRace(Race race) {
+		boolean deleted = false;
+		if (raceList.containsKey(race.getRaceName())) {
+			if (raceList.get(race.getRaceName()).getRacePodium() == null) {
+				raceList.remove(race.getRaceName());
+				deleted = true;
+			}
+		}
+		return deleted;
+	}
+
 	public boolean addRace(Race race) {
 		boolean added = false;
 		if (!this.getRaceList().containsKey(race.getRaceName())) {
 			if (race instanceof EliminationRace) {
-				raceList.put(race.getRaceName(), new EliminationRace(race.getRaceName(), ((EliminationRace) race).getPreviewsRounds()));
+				raceList.put(race.getRaceName(),
+						new EliminationRace(race.getRaceName(), ((EliminationRace) race).getPreviewsRounds()));
 			} else if (race instanceof StandardRace) {
-				raceList.put(race.getRaceName(),new StandardRace(race.getRaceName(), ((StandardRace) race).getDuration()));
-
+				raceList.put(race.getRaceName(),
+						new StandardRace(race.getRaceName(), ((StandardRace) race).getDuration()));
 			}
-			this.setTotalRaces(this.getTotalRaces() + 1);
 			added = true;
 		}
 		return added;
@@ -135,16 +126,12 @@ public class Competition implements Serializable {
 
 	public boolean setCompetitionPodium() {
 		boolean setted = false;
-		if (this.getDoneRaces() == this.getTotalRaces()) {
-			this.competitionPodium = new CarCompetition[3];
+		if (this.getDoneRaces() == this.getRaceList().size()) {
+			this.competitionPodium = new ArrayList<CarCompetition>();
 			this.sortCarByPunctuation();
-			if (this.getCarList().size() > 2) {
-				this.getCompetitionPodium()[2] = this.getCarList().get(2);
+			for (int i = 0; i < this.getCarList().size() && i < 3; i++) {
+				competitionPodium.add(i, this.getCarList().get(i));
 			}
-			if (this.getCarList().size() > 1) {
-				this.getCompetitionPodium()[1] = this.getCarList().get(1);
-			}
-			this.getCompetitionPodium()[0] = this.getCarList().get(0);
 			setted = true;
 		}
 		return setted;
@@ -152,14 +139,13 @@ public class Competition implements Serializable {
 
 	public String getStringCompetitionPodium() {
 		String podium = "\n___________" + this.getCompetitionName() + "___________\n";
-		for (int i = 0; i < this.getCompetitionPodium().length; i++) {
-			if (!Objects.isNull(this.getCompetitionPodium()[i])) {
-				podium += "\t" + (i + 1) + ". " + this.getCompetitionPodium()[i].getCar().getCarName() + " ("
-						+ this.getCompetitionPodium()[i].getCar().getGarageName() + ") con "
-						+ this.getCompetitionPodium()[i].getCarPunctuation() + " puntos)\n";
-			}
+		for (int i = 0; i < this.getCompetitionPodium().size(); i++) {
+			podium += "\t" + (i + 1) + ". " + this.getCompetitionPodium().get(i).getCar().getCarName() + " ("
+					+ this.getCompetitionPodium().get(i).getCar().getGarageName() + ") con "
+					+ this.getCompetitionPodium().get(i).getCarPunctuation() + " puntos)\n";
+
 		}
-		podium += "...........................";
+		podium += "...........................\n";
 		return podium;
 	}
 

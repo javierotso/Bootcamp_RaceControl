@@ -104,7 +104,7 @@ public class GarageUtils {
 		if (!garageList.isEmpty()) {
 			String garageName;
 			System.out.print(showGaragesList(garageList));
-			garageName = Utils.prettyPrint("Escriba el nombre de la escudería deseada:");
+			garageName = Utils.prettyPrint(Utils.readString("Escriba el nombre de la escudería deseada:"));
 			if (garageList.containsKey(garageName)) {
 				garage = garageList.get(garageName);
 			}

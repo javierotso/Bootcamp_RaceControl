@@ -1,6 +1,5 @@
 package es.imatia.raceControl.utils;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utils {
@@ -68,8 +67,8 @@ public class Utils {
 		Scanner sc = new Scanner(System.in);
 		String answer = "";
 		while (answer.isEmpty()) {
-			answer = sc.nextLine();
 			System.out.print("\n" + msg + " ");
+			answer = sc.nextLine();
 		}
 		return answer;
 	}

@@ -1,12 +1,7 @@
 package es.imatia.raceControl.objectsclasses;
 
-import java.io.Serializable;
+public class CarCompetition {
 
-public class CarCompetition implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Car car;
 	private int carPunctuation = 0;
 	private double carDistance = 0;
@@ -21,6 +16,10 @@ public class CarCompetition implements Serializable{
 
 	public void setCar(Car car) {
 		this.car = car;
+	}
+	
+	public void setCarPunctuation(int punctuation) {
+		this.carPunctuation = punctuation;
 	}
 
 	public int getCarPunctuation() {
@@ -46,5 +45,5 @@ public class CarCompetition implements Serializable{
 	public void resetPuctuation() {
 		this.carPunctuation = 0;
 	}
-	
+
 }

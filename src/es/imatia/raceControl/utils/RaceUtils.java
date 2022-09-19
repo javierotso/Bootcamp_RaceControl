@@ -79,6 +79,9 @@ public class RaceUtils {
 					System.out.print(" (Estándar con una duración de " + ((StandardRace)race).getDuration() + " minutos)");
 
 				}
+				if(race.getRacePodium() != null) {
+					System.out.print("  <REALIZADA>   ");
+				}
 			}
 			System.out.print("\n");
 		} else {
@@ -91,7 +94,7 @@ public class RaceUtils {
 		showRaceList(raceList);
 		int index = Utils.readPositiveInt("Seleccione el número de carrera:");
 		if (index > 0 && index <= raceList.length) {
-			selectedRace = raceList[index];
+			selectedRace = raceList[index - 1];
 		}
 		return selectedRace;
 	}
@@ -101,15 +104,15 @@ public class RaceUtils {
 		String raceName = Utils.prettyPrint(Utils.readString("Indique el nombre de la carrera a crear:"));
 		if(!raceList.containsKey(raceName)) {
 			String type = " ";
-			while(type.equalsIgnoreCase("eliminatoria") && type.equalsIgnoreCase("estandar")) {
+			while(!type.equalsIgnoreCase("eliminatoria") && !type.equalsIgnoreCase("estandar")) {
 				type = Utils.prettyPrint(Utils.readString("Indique el tipo de carrera (eliminatoria/estandar):"));
 			}
 			if(type.equalsIgnoreCase("eliminatoria")) {
-				int previewsRounds = Utils.readPositiveInt("\nIndique el número de vueltas de calentamiento deseadas:");
+				int previewsRounds = Utils.readPositiveInt("Indique el número de vueltas de calentamiento deseadas:");
 				raceList.put(raceName, new EliminationRace(raceName, previewsRounds));
 				added = true;
 			} else {
-				int duration = Utils.readPositiveInt("\nIndique ela duración de la carrera en minutos:");
+				int duration = Utils.readPositiveInt("Indique ela duración de la carrera en minutos:");
 				raceList.put(raceName, new StandardRace(raceName, duration));
 				added = true;
 			}

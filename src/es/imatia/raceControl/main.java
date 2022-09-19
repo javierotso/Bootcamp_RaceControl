@@ -1,32 +1,19 @@
 package es.imatia.raceControl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Random;
 import es.imatia.raceControl.objectsclasses.*;
 import es.imatia.raceControl.utils.*;
 
 public class main {
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) {
 
 		HashMap<String, Garage> garageList = new HashMap<String, Garage>();
 		HashMap<String, Race> raceList = new HashMap<String, Race>();
 		HashMap<String, Competition> competitionList = new HashMap<String, Competition>();
 
-		File dataFile = new File("data.bin");
-		if (dataFile.exists()) {
-			FileInputStream fis = new FileInputStream(dataFile);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			garageList = (HashMap<String, Garage>) ois.readObject();
-			competitionList = (HashMap<String, Competition>) ois.readObject();
-			ois.close();
-		}
-
+		DataUtils.importXMLFile(garageList, raceList, competitionList);
+		// startTask(garageList, raceList, competitionList);
 		int option = -1;
 
 		while (option != 0) {
@@ -35,7 +22,7 @@ public class main {
 			option = Utils.readPositiveInt("¿Que acción desea realizar?:");
 			switch (option) {
 			case 1:
-				CompetitionUtils.competitionMenu(competitionList, raceList);
+				CompetitionUtils.competitionMenu(competitionList, raceList, garageList);
 				break;
 			case 2:
 				GarageUtils.garageMenu(garageList);
@@ -51,17 +38,8 @@ public class main {
 
 			}
 		}
-		if (dataFile.exists()) {
-			dataFile.delete();
-		}
-
-		FileOutputStream fos = new FileOutputStream(dataFile);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(garageList);
-		oos.writeObject(competitionList);
-		oos.close();
-
-	}	
+		DataUtils.exportXMLFile(garageList, raceList, competitionList);
+	}
 
 	public static void startTask(HashMap<String, Garage> garageList, HashMap<String, Race> raceList,
 			HashMap<String, Competition> competitionList) {
@@ -114,7 +92,7 @@ public class main {
 		escuderia.addCar(new Car("Lisa", "Graumlich", escuderia));
 		escuderia.addCar(new Car("Magnus", "Hirschfeld", escuderia));
 
-		escuderia = new Garage("JTG Daugherty Racing");
+		escuderia = new Garage("Jtg Daugherty Racing");
 		garageList.put(escuderia.getGarageName(), escuderia);
 		escuderia.addCar(new Car("James David", "Jentsch", escuderia));
 		escuderia.addCar(new Car("Sophia", "Jex-Blake", escuderia));
@@ -130,7 +108,7 @@ public class main {
 		escuderia.addCar(new Car("Marina", "Logares Jiménez", escuderia));
 		escuderia.addCar(new Car("Eduardo", "López Collazo", escuderia));
 
-		escuderia = new Garage("NEMCO Motorsports");
+		escuderia = new Garage("Nemco Motorsports");
 		garageList.put(escuderia.getGarageName(), escuderia);
 		escuderia.addCar(new Car("Katie", "Mack", escuderia));
 		escuderia.addCar(new Car("Anson William", "Mackay", escuderia));
@@ -160,7 +138,7 @@ public class main {
 		escuderia.addCar(new Car("Agnes Ermina", "Wells", escuderia));
 		escuderia.addCar(new Car("Elisabeth", "Winterhalter", escuderia));
 
-		Race carrera = new StandardRace("Sport Clips Haircuts VFW 200", 200);
+		Race carrera = new StandardRace("Sport Clips Haircuts Vwf 200", 200);
 
 		raceList.put(carrera.getRaceName(), carrera);
 		carrera = new StandardRace("Kansas Lottery 300", 300);

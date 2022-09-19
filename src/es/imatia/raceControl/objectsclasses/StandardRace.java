@@ -1,26 +1,19 @@
 package es.imatia.raceControl.objectsclasses;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import es.imatia.raceControl.utils.Utils;
 
 public class StandardRace extends Race {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	private static final int DEFAULT_STANDARD_RACE_DURATION = 180; // min
 	private static final int PREVIEWS_RANDOM_SPEED = 60;
 	private int duration;
 
-	public StandardRace (String raceName) {
+	public StandardRace(String raceName) {
 		super(raceName);
 		this.setDuration(StandardRace.getDEFAULT_STANDARD_RACE_DURATION());
 	}
-	
-	public StandardRace (String raceName, int duration) {
+
+	public StandardRace(String raceName, int duration) {
 		super(raceName);
 		this.setDuration(duration);
 	}
@@ -42,7 +35,7 @@ public class StandardRace extends Race {
 			car.getCar().randomSpeedChange();
 			car.addMinuteDistance();
 		}
-		this.sortCarByDistance();
+		this.sortCarByDistance(0, this.getCarList().size());
 		return this.getCarList();
 	}
 
@@ -51,11 +44,11 @@ public class StandardRace extends Race {
 			car.getCar().accelerate();
 			car.addMinuteDistance();
 		}
-		this.sortCarByDistance();
+		this.sortCarByDistance(0, this.getCarList().size());
 		return this.getCarList();
 	}
 
-	public String totalRace(Competition competition) {
+	public String totalRace() {
 		String ranking = "\nCARRERA " + this.getRaceName().toUpperCase() + ":\n";
 		int consumedTime = 0;
 		while (this.getCarList().get(this.getCarList().size() - 1).getCar().getCarSpeed() < PREVIEWS_RANDOM_SPEED
@@ -66,8 +59,7 @@ public class StandardRace extends Race {
 		for (int i = 0; i < (this.getDuration() - consumedTime); i++) {
 			ranking += this.roundString(raceMinute()) + "\n";
 		}
-		this.setRacePodium(this.getCarList());
-		competition.setCompetitionPodium();
+		this.setRacePodium(this.getCarList(), true);
 		for (CarCompetition car : this.getCarList()) {
 			car.resetDistance();
 		}
@@ -87,27 +79,10 @@ public class StandardRace extends Race {
 		return ranking;
 	}
 
-	public void setRacePodium(ArrayList<CarCompetition> carList) {
-		this.podium = new CarCompetition[Math.min(carList.size(), 3)];
-		sortCarByDistance();
-		for (int i = 0; i < carList.size() && i < 3; i++) {
-			if (i == 0) {
-				carList.get(i).addPunctuation(FIRST_PLACE_POINTS);
-			}
-			if (i == 1) {
-				carList.get(i).addPunctuation(SECOND_PLACE_POINTS);
-			}
-			if (i == 2) {
-				carList.get(i).addPunctuation(THIRD_PLACE_POINTS);
-			}
-			this.podium[i] = carList.get(i);
-		}
-
-	}
-
 	@Override
 	public String getDetails() {
-		return ("\nCarrera: " + this.getRaceName() + "\n   Tipo: Estándar" + "\n   Duración: " + this.getDuration() + " minutos\n");
+		return ("\nCarrera: " + this.getRaceName() + "\n   Tipo: Estándar" + "\n   Duración: " + this.getDuration()
+				+ " minutos\n");
 
 	}
 
