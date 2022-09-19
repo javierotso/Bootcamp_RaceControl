@@ -57,10 +57,6 @@ public class Car {
 		this.garageName = carGarage.getGarageName();
 	}
 
-	public static int getMaxSpeed() {
-		return MAX_SPEED;
-	}
-
 	public void randomSpeedChange() {
 		Random random = new Random();
 		if (random.nextBoolean()) {

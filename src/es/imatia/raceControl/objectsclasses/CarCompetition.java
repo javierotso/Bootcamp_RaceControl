@@ -17,7 +17,7 @@ public class CarCompetition {
 	public void setCar(Car car) {
 		this.car = car;
 	}
-	
+
 	public void setCarPunctuation(int punctuation) {
 		this.carPunctuation = punctuation;
 	}
@@ -40,10 +40,6 @@ public class CarCompetition {
 
 	public void resetDistance() {
 		this.carDistance = 0;
-	}
-
-	public void resetPuctuation() {
-		this.carPunctuation = 0;
 	}
 
 }

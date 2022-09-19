@@ -148,18 +148,4 @@ public class Competition {
 		podium += "...........................\n";
 		return podium;
 	}
-
-	public String getStringCompetitionGarages() {
-		String garages = "\n____" + this.getCompetitionName() + "____\n";
-		int i = 0;
-		if (!this.getGarageList().isEmpty()) {
-			for (Garage garage : this.getGarageList().values()) {
-				i += 1;
-				garages += i + ". " + garage.getGarageName() + "\n";
-			}
-		} else {
-			garages += "\nEste torneo todavía no tiene inscrita ninguna escudería\n";
-		}
-		return garages;
-	}
 }
