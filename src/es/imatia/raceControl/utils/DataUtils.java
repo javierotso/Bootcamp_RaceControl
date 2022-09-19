@@ -23,7 +23,7 @@ import es.imatia.raceControl.objectsclasses.*;
 
 public class DataUtils {
 	public static void exportXMLFile(HashMap<String, Garage> garageList, HashMap<String, Race> raceList,
-			HashMap<String, Competition> competitionList) {
+			HashMap<String, Competition> competitionList, File file) {
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -146,12 +146,12 @@ public class DataUtils {
 	}
 
 	public static void importXMLFile(HashMap<String, Garage> garageList, HashMap<String, Race> raceList,
-			HashMap<String, Competition> competitionList) {
+			HashMap<String, Competition> competitionList, File file) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new File("raceControlData.xml"));
+			Document document = builder.parse(file);
 			document.getDocumentElement().normalize();
 
 			// Garages
