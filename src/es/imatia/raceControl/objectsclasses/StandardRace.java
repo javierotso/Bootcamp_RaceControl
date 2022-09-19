@@ -63,7 +63,7 @@ public class StandardRace extends Race {
 		for (CarCompetition car : this.getCarList()) {
 			car.resetDistance();
 		}
-		;
+		
 		ranking += "...........................................................";
 		return ranking;
 	}

@@ -60,6 +60,7 @@ public class CompetitionUtils {
 				} else {
 					System.out.print("\nTodavía no hay torneos\n");
 				}
+				break;
 			case 0:
 				System.out.print("\n.... Volviendo al menú principal ....\n");
 				break;
@@ -115,20 +116,28 @@ public class CompetitionUtils {
 
 	public static void addRaceGarage(Race race, HashMap<String, Garage> garageList) {
 		boolean moreGarage = true;
-		while (moreGarage || race.getGarageList().isEmpty()) {
-			System.out.print("\n... Escuderías disponibles para participar ...\n");
-			Garage selected = GarageUtils.selectGarage(garageList);
-			if (selected != null && !race.getGarageList().containsKey(selected.getGarageName())) {
-				race.addGarage(selected);
-				System.out.print("\nEscudería añadida correctamente");
-			} else {
-				System.out.print("\nLa escudería ya se había añadido previamente");
+		if (!Utils.readString("\nIndique 'si' si desea añadir todas las escuderías disponibles: ").trim()
+				.equalsIgnoreCase("si")) {
+			while (moreGarage || race.getGarageList().isEmpty()) {
+				System.out.print("\n... Escuderías disponibles para participar ...\n");
+				Garage selected = GarageUtils.selectGarage(garageList);
+				if (selected != null && !race.getGarageList().containsKey(selected.getGarageName())) {
+					race.addGarage(selected);
+					System.out.print("\nEscudería añadida correctamente");
+				} else {
+					System.out.print("\nLa escudería ya se había añadido previamente");
+				}
+				if (!race.getGarageList().isEmpty()) {
+					moreGarage = Utils
+							.prettyPrint(Utils.readString("\n¿Desea añadir otra escudería? (s para continuar): "))
+							.equalsIgnoreCase("s");
+				} else {
+					System.out.print("\nDebe añadir al menos una escudería válida\n");
+				}
 			}
-			if (!race.getGarageList().isEmpty()) {
-				moreGarage = Utils.prettyPrint(Utils.readString("\n¿Desea añadir otra escudería? (s para continuar): "))
-						.equalsIgnoreCase("s");
-			} else {
-				System.out.print("\nDebe añadir al menos una escudería válida\n");
+		} else {
+			for (Garage garage : garageList.values()) {
+				race.addGarage(garage);
 			}
 		}
 	}
@@ -180,7 +189,7 @@ public class CompetitionUtils {
 				break;
 			case 4:
 				if (Objects.isNull(competition.getCompetitionPodium())) {
-					if (!competition.getRaceList().isEmpty()) {
+					if (!competition.getRaceList().isEmpty() && !garageList.isEmpty()) {
 						selectedRace = RaceUtils.selectRace(RaceUtils.raceToArray(competition.getRaceList()));
 						if (!Objects.isNull(selectedRace)) {
 							if (selectedRace.getRacePodium() == null) {
@@ -211,7 +220,7 @@ public class CompetitionUtils {
 					}
 				}
 			case 0:
-				System.out.print("\n.... Volviendo al menú principal ....\n");
+				System.out.print("\n.... Volviendo a torneos ....\n");
 				break;
 			default:
 				System.out.print("\nLa opción seleccionada no está disponible todavía\n");
