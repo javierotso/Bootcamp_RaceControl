@@ -148,11 +148,11 @@ public class CompetitionUtils {
 		while (option != 0) {
 			Race selectedRace = null;
 			System.out.print(Utils.secondaryHeader(competition.getCompetitionName(), '*'));
-			System.out.print("\n\t1. Ver ránking\n\t2. Ver pódium de carrera");
+			System.out.print("\n\t1. Ver ránking\n\t2. Ver pódium de carrera\n\t3. Ver escuderías participantes");
 			if (!Objects.isNull(competition.getCompetitionPodium())) {
-				System.out.print("\n\t3. Ver pódium del torneo");
+				System.out.print("\n\t4. Ver pódium del torneo");
 			} else {
-				System.out.print("\n\t3. Añadir carrera a torneo\n\t4. Empezar carrera\n\t5. Eliminar carrera");
+				System.out.print("\n\t4. Añadir carrera a torneo\n\t5. Empezar carrera\n\t6. Eliminar carrera");
 			}
 			System.out.print("\n\t0. Volver\n");
 			option = Utils.readPositiveInt("¿Que acción desea realizar?:");
@@ -180,6 +180,13 @@ public class CompetitionUtils {
 				}
 				break;
 			case 3:
+				if(!competition.getGarageList().isEmpty()) {
+					System.out.print(GarageUtils.showGaragesList(competition.getGarageList()));
+				} else {
+					System.out.print("\nEste torneo todavía no tiene ninguna escudería inscrita\n");
+				}
+				break;
+			case 4:
 				if (!Objects.isNull(competition.getCompetitionPodium())) {
 					System.out.print(competition.getStringCompetitionPodium());
 				} else {
@@ -187,7 +194,7 @@ public class CompetitionUtils {
 				}
 
 				break;
-			case 4:
+			case 5:
 				if (Objects.isNull(competition.getCompetitionPodium())) {
 					if (!competition.getRaceList().isEmpty() && !garageList.isEmpty()) {
 						selectedRace = RaceUtils.selectRace(RaceUtils.raceToArray(competition.getRaceList()));
@@ -210,7 +217,7 @@ public class CompetitionUtils {
 				}
 				break;
 
-			case 5:
+			case 6:
 				if (Objects.isNull(competition.getCompetitionPodium())) {
 					if (competition
 							.deleteRace(RaceUtils.selectRace(RaceUtils.raceToArray(competition.getRaceList())))) {

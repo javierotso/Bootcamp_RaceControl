@@ -8,20 +8,27 @@ import es.imatia.raceControl.utils.*;
 
 public class main {
 	public static void main(String[] args) {
-		
-		final String FILE_PATH = "raceControl.xml";
+
+		final String FILE_PATH = "raceControlData.xml";
 
 		HashMap<String, Garage> garageList = new HashMap<String, Garage>();
 		HashMap<String, Race> raceList = new HashMap<String, Race>();
 		HashMap<String, Competition> competitionList = new HashMap<String, Competition>();
+		int option = -1;
 
 		File file = new File(FILE_PATH);
 		if (file.exists()) {
 			DataUtils.importXMLFile(garageList, raceList, competitionList, file);
 		} else {
-			Utils.startTask(garageList, raceList, competitionList);
+			if (!Utils
+					.readString(
+							"\nNo se ha encontrado fichero de datos, ¿desea continuar sin datos? (s para continuar): ")
+					.equalsIgnoreCase("s")) {
+				option = 0;
+				System.out.print("\n........... S A L I E N D O ...........\n");
+			}
+			// Utils.startTask(garageList, raceList, competitionList);
 		}
-		int option = -1;
 
 		while (option != 0) {
 			System.out.print(Utils.principalHeader("BIENVENIDO", '#'));
