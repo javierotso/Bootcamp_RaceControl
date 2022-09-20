@@ -126,7 +126,7 @@ public class Competition {
 
 	public boolean setCompetitionPodium() {
 		boolean setted = false;
-		if (this.getDoneRaces() == this.getRaceList().size()) {
+		if (this.isFinalized()) {
 			this.competitionPodium = new ArrayList<CarCompetition>();
 			this.sortCarByPunctuation();
 			for (int i = 0; i < this.getCarList().size() && i < 3; i++) {
@@ -147,5 +147,9 @@ public class Competition {
 		}
 		podium += "...........................\n";
 		return podium;
+	}
+
+	public boolean isFinalized() {
+		return (doneRaces == this.getRaceList().size() && doneRaces > 0);
 	}
 }

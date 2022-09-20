@@ -21,7 +21,9 @@ public class CompetitionUtils {
 				String competitionName = Utils.prettyPrint(Utils.readString("Indique el nombre del torneo:"));
 				Competition competition = new Competition(competitionName);
 				if (!competitionList.containsKey(competitionName)) {
-					addRace(competition, raceList);
+					if (!raceList.isEmpty()) {
+						addRace(competition, raceList);
+					}
 					competitionList.put(competition.getCompetitionName(), competition);
 					System.out.print("\nTorneo añadido correctamente\n");
 				} else {
@@ -86,7 +88,7 @@ public class CompetitionUtils {
 		String competitionString = "\nTorneos: \n";
 		for (int i = 0; i < competitionArray.size(); i++) {
 			competitionString += "\t" + (i + 1) + ". " + competitionArray.get(i).getCompetitionName();
-			if (competitionArray.get(i).getDoneRaces() == competitionArray.get(i).getRaceList().size()) {
+			if (competitionArray.get(i).isFinalized()) {
 				competitionString += " <FINALIZADO>";
 			}
 			competitionString += "\n";
@@ -180,7 +182,7 @@ public class CompetitionUtils {
 				}
 				break;
 			case 3:
-				if(!competition.getGarageList().isEmpty()) {
+				if (!competition.getGarageList().isEmpty()) {
 					System.out.print(GarageUtils.showGaragesList(competition.getGarageList()));
 				} else {
 					System.out.print("\nEste torneo todavía no tiene ninguna escudería inscrita\n");

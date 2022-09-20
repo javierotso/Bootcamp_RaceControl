@@ -15,7 +15,7 @@ public class main {
 		HashMap<String, Competition> competitionList = new HashMap<String, Competition>();
 		int option = -1;
 
-		File file = new File(FILE_PATH);
+	/*	File file = new File(FILE_PATH);
 		if (file.exists()) {
 			DataUtils.importXMLFile(garageList, raceList, competitionList, file);
 		} else {
@@ -28,7 +28,7 @@ public class main {
 			}
 			// Utils.startTask(garageList, raceList, competitionList);
 		}
-
+*/
 		while (option != 0) {
 			System.out.print(Utils.principalHeader("BIENVENIDO", '#'));
 			System.out.print(Utils.principalMenu());
@@ -51,7 +51,7 @@ public class main {
 
 			}
 		}
-		DataUtils.exportXMLFile(garageList, raceList, competitionList, file);
+	//	DataUtils.exportXMLFile(garageList, raceList, competitionList, file);
 	}
 
 }
