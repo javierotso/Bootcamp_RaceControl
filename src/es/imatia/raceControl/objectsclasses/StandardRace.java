@@ -59,7 +59,12 @@ public class StandardRace extends Race {
 		for (int i = 0; i < (this.getDuration() - consumedTime); i++) {
 			ranking += this.roundString(raceMinute()) + "\n";
 		}
-		this.setRacePodium(this.getCarList(), true);
+		ArrayList<CarCompetition> podium = new ArrayList<CarCompetition>();
+		for(int i = 0; i < 3 && i < this.getCarList().size(); i++) {
+			podium.add(this.getCarList().get(i));
+		}
+		this.setRacePodium(podium, true);
+		this.setRacePodium(podium, true);
 		for (CarCompetition car : this.getCarList()) {
 			car.resetDistance();
 		}

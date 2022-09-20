@@ -111,7 +111,7 @@ public class DataUtils {
 							competitionRace.appendChild(competitionCars);
 							Element racePodium = document.createElement("racePodium");
 							if (rc.getRacePodium() != null) {
-								for (int i = 0; i < rc.getRacePodium().size(); i++) {
+								for (int i = 0; i < rc.getRacePodium().size() && i < 3; i++) {
 									Element podiumCar = document.createElement("podiumCar");
 									podiumCar.setAttribute("position", (i + 1) + "");
 									podiumCar.setAttribute("carName", rc.getRacePodium().get(i).getCar().getCarName());

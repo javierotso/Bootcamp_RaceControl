@@ -112,7 +112,11 @@ public class EliminationRace extends Race {
 			roundCount += 1;
 
 		}
-		this.setRacePodium(this.getCarList(), true);
+		ArrayList<CarCompetition> podium = new ArrayList<CarCompetition>();
+		for(int i = 0; i < 3 && i < this.getCarList().size(); i++) {
+			podium.add(this.getCarList().get(i));
+		}
+		this.setRacePodium(podium, true);
 
 		return ranking;
 	}
