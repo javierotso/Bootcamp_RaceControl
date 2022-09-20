@@ -116,7 +116,7 @@ public class GarageUtils {
 		String garageString = "\nEscuderías: \n";
 		if (!garageList.isEmpty()) {
 			for (Garage garage : garageList.values()) {
-				garageString += "\t- " + garage.getGarageName() + "\n";
+				garageString += garage.toString();
 			}
 		} else {
 			garageString += "\tTodavía no hay elementos para mostrar.\n";

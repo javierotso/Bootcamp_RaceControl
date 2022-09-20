@@ -2,7 +2,6 @@ package es.imatia.raceControl;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Random;
 import es.imatia.raceControl.objectsclasses.*;
 import es.imatia.raceControl.utils.*;
 
@@ -53,7 +52,6 @@ public class main {
 			}
 		}
 		DataUtils.exportXMLFile(garageList, raceList, competitionList, file);
-
 	}
 
 }

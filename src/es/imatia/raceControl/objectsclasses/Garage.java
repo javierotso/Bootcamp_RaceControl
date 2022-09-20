@@ -43,5 +43,9 @@ public class Garage {
 		}
 		return added;
 	}
+	
+	public String toString() {
+		return ("\t- " + this.getGarageName() + "\n");
+	}
 
 }
